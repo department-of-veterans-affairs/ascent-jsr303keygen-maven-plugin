@@ -1,0 +1,8 @@
+application1:
+  password1: mypass
+  key1: mykey
+  property1: myproperty
+  password2: '{cipher}herkgeriugyiteuhtoireuhfgopieruo'
+  mapKey1:
+   - val11
+   - val12

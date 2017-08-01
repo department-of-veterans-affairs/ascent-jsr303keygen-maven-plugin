@@ -1,0 +1,1 @@
+# ascent-config-encrypt-plugin

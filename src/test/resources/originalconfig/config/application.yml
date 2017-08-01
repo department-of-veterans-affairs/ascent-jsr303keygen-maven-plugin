@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: "Test Mojo"
+    key:
+      subkey: subvalue
+    anotherKey: anvalue
+---
+
+application:
+  password: mypass
+  key: mykey
+  property: myproperty
+
+---
+
+application2:
+  mypassword: mypass
+  password2: pass2
+  key2: mykey
+  property2: myproperty
+  mapKey:
+   - val1
+   - val2
+
+---
+test
