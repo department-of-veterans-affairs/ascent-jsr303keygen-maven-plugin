@@ -1,33 +1,230 @@
 package gov.va.ascent.maven.plugins.jsr303keygen;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
+import gov.va.ascent.maven.plugins.jsr303keygen.model.AscentJsr303KeyGenDescriptor;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import gov.va.ascent.maven.plugins.jsr303keygen.model.JsonModelMapper;
+import gov.va.ascent.maven.plugins.jsr303keygen.model.OperationDescriptor;
 
-@Mojo( name = "keygen")
+/**
+ * The Class AscentJsr303KeyGen is the Maven plugin mojo itself, the entry point when executed.
+ *
+ * @author jshrader
+ */
+@Mojo(name = "keygen", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 public class AscentJsr303KeyGen extends AbstractMojo {
 
-    /** The Constant LOGGER. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AscentJsr303KeyGen.class);
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AscentJsr303KeyGen.class);
 
-    @Parameter(property = "keygen.ascentJsr303KeyGenDescriptorFile")
-    private File ascentJsr303KeyGenDescriptorFile;
+	@Parameter(property = "keygen.ascentJsr303KeyGenDescriptorFile")
+	private File ascentJsr303KeyGenDescriptorFile;
 
-    @Parameter(property = "keygen.ascentJsr303KeyGenOutputFile")
-    private File ascentJsr303KeyGenOutputFile;
+	@Parameter(property = "keygen.ascentJsr303KeyGenOutputFile")
+	private File ascentJsr303KeyGenOutputFile;
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.apache.maven.plugin.Mojo#execute()
+	 */
+	public final void execute() throws MojoExecutionException {
+		doExecute(ascentJsr303KeyGenDescriptorFile, ascentJsr303KeyGenOutputFile);
+	}
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().info( ascentJsr303KeyGenDescriptorFile.getAbsolutePath() );
-        getLog().info( ascentJsr303KeyGenOutputFile.getAbsolutePath() );
+	/**
+	 * Do execute, broken out from execute to enable easier testing.
+	 *
+	 * @param ascentJsr303KeyGenDescriptorFile the ascent jsr 303 key gen descriptor file
+	 * @param ascentJsr303KeyGenOutputFile the ascent jsr 303 key gen output file
+	 */
+	protected static void doExecute(final File ascentJsr303KeyGenDescriptorFile, final File ascentJsr303KeyGenOutputFile)  throws MojoExecutionException{
+		if (ascentJsr303KeyGenDescriptorFile == null) {
+			throw new MojoExecutionException("ascentJsr303KeyGenDescriptorFile input file is required");
+		} else {
+			LOGGER.info("Attempting to use ascentJsr303KeyGenDescriptorFile at: " + ascentJsr303KeyGenDescriptorFile.getAbsolutePath());
+		}
+		if (ascentJsr303KeyGenOutputFile == null) {
+			throw new MojoExecutionException("ascentJsr303KeyGenOutputFile input file is a required param");
+		} else {
+			LOGGER.info("Attempting to use ascentJsr303KeyGenOutputFile at: " + ascentJsr303KeyGenOutputFile.getAbsolutePath());
+			// ensure file is writeable (side effect is empty it out and recreate)
+			try(BufferedWriter writer = Files.newBufferedWriter(ascentJsr303KeyGenOutputFile.toPath())) {
+				writer.write("");
+			} catch (final IOException ioe) {
+				String message = "IOException writing the ascentJsr303KeyGenOutputFile!";
+				final MojoExecutionException mojoExecutionException = new MojoExecutionException(message, ioe);
+				LOGGER.error(message, mojoExecutionException);
+				throw mojoExecutionException;
+			}
+		}
 
-    }
+		AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptor = null;
+		try {
+			ascentJsr303KeyGenDescriptor = JsonModelMapper.descriptorFromJson(new String(Files.readAllBytes(ascentJsr303KeyGenDescriptorFile.toPath())));
+		} catch (final IOException ioe) {
+			throw new MojoExecutionException("IOException reading the ascentJsr303KeyGenDescriptorFile: ", ioe);
+		}
+		if (ascentJsr303KeyGenDescriptor == null) {
+			throw new MojoExecutionException("There was an error parsing the ascentJsr303KeyGenDescriptorFile, ensure JSON is valid!");
+		}
+
+		MessageInterpolator messageInterpolator;
+		if (ascentJsr303KeyGenDescriptor.getCustomMessageBundles() != null
+				&& ascentJsr303KeyGenDescriptor.getCustomMessageBundles().size() > 0) {
+			messageInterpolator = new MessageInterpolator(ascentJsr303KeyGenDescriptor.getCustomMessageBundles());
+		} else {
+			messageInterpolator = new MessageInterpolator();
+		}
+		LOGGER.info("Loaded and going to use the following ascentJsr303KeyGenDescriptor: " + ascentJsr303KeyGenDescriptor);
+		consolidateKeysForGeneration(messageInterpolator, ascentJsr303KeyGenDescriptor);
+
+		LOGGER.info("Writing out the HTML file: " + ascentJsr303KeyGenOutputFile.getAbsolutePath());
+		genHtml(ascentJsr303KeyGenDescriptor, ascentJsr303KeyGenOutputFile);
+	}
+
+	/**
+	 * Consolidate keys for generation.
+	 *
+	 * Static broken out from execute to enable easier testing.
+	 *
+	 * @param ascentJsr303KeyGenDescriptor the ascent jsr 303 key gen descriptor
+	 */
+	private static void consolidateKeysForGeneration(final MessageInterpolator messageInterpolator,
+			final AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptor) throws MojoExecutionException {
+		for (final OperationDescriptor operationDescriptor : ascentJsr303KeyGenDescriptor.getOperationDescriptors()) {
+			getJsr303Keys(messageInterpolator, operationDescriptor);
+			getInterfaceKeys(messageInterpolator, operationDescriptor);
+			// ensure the consolidated list is all sorted
+			operationDescriptor.setErrorKeys(new TreeMap<>(operationDescriptor.getErrorKeys()));
+		}
+	}
+
+	/**
+	 * Gets the interface keys.
+	 *
+	 * @param operationDescriptor the operation descriptor
+	 * @return the interface keys
+	 */
+	private static void getInterfaceKeys(final MessageInterpolator messageInterpolator,
+			final OperationDescriptor operationDescriptor) throws MojoExecutionException {
+		// add in all the JSR 303 for the specified classes
+		LOGGER.info("Processing interface keys for operation: " + operationDescriptor.getName());
+		final Map<String, String> interfaceErrors = new HashMap<>();
+		for (final String interfaceToLookAt : operationDescriptor.getGenKeysFromInterfaces()) {
+			LOGGER.info("Pulling keys out of source interface: " + interfaceToLookAt);
+			try {
+				ErrorIntrospector.introspectInterfaceForKeys(messageInterpolator, Class.forName(interfaceToLookAt), interfaceErrors);
+			} catch (final ClassNotFoundException cnfe) {
+				String message = "ClassNotFoundException getting keys from interface, verify your configuration.";
+				final MojoExecutionException mojoExecutionException = new MojoExecutionException(message, cnfe);
+				LOGGER.error(message, mojoExecutionException);
+				throw mojoExecutionException;
+			}
+		}
+		if (!interfaceErrors.isEmpty()) {
+			for (final Map.Entry<String, String> interfaceError : interfaceErrors.entrySet()) {
+				operationDescriptor.getErrorKeys().put(interfaceError.getKey(), interfaceError.getValue());
+			}
+		}
+	}
+
+	/**
+	 * Gets the jsr 303 keys.
+	 *
+	 * @param operationDescriptor the operation descriptor
+	 * @return the jsr 303 keys
+	 */
+	private static void getJsr303Keys(final MessageInterpolator messageInterpolator, final OperationDescriptor operationDescriptor) throws MojoExecutionException {
+		// add in all the JSR 303 for the specified classes
+		LOGGER.info("Processing JSR303 keys for operation: " + operationDescriptor.getName());
+		final Map<String, String> jsr303Errors = new HashMap<String, String>();
+		for (final String jsr303SourceClass : operationDescriptor.getGenJsr303KeysFromClasses()) {
+			LOGGER.info("Pulling Jsr303 validations out of source class: " + jsr303SourceClass);
+			try {
+				ErrorIntrospector.instrospectClassForJSR303s(messageInterpolator, Class.forName(jsr303SourceClass), "", jsr303Errors);
+			} catch (final ClassNotFoundException cnfe) {
+				String message = "ClassNotFoundException getting Jsr303 for class, verify your configuration.";
+				final MojoExecutionException mojoExecutionException = new MojoExecutionException(message, cnfe);
+				LOGGER.error(message, mojoExecutionException);
+				throw mojoExecutionException;
+			}
+		}
+		if (!jsr303Errors.isEmpty()) {
+			for (final Map.Entry<String, String> jsr303Error : jsr303Errors.entrySet()) {
+				operationDescriptor.getErrorKeys().put(jsr303Error.getKey(), jsr303Error.getValue());
+			}
+		}
+	}
+
+	/**
+	 * Gen html.
+	 *
+	 * @param ascentJsr303KeyGenDescriptor the ascent jsr 303 key gen descriptor
+	 * @param ascentJsr303KeyGenOutputFile the ascent jsr 303 key gen output file
+	 */
+	private static void genHtml(final AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptor, final File ascentJsr303KeyGenOutputFile) throws MojoExecutionException {
+
+		final VelocityEngine velocityEngine = new VelocityEngine();
+		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+		velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+		velocityEngine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, "org.apache.velocity.runtime.log.SystemLogChute");
+		velocityEngine.init();
+
+		// create+populate context
+		final VelocityContext context = new VelocityContext();
+		context.put("ascentJsr303KeyGenDescriptor", ascentJsr303KeyGenDescriptor);
+
+		// load template
+		String templatePath = "templates/errorkeys.vm";
+		final InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("templates/errorkeys.vm");
+		if (input == null) {
+			throw new MojoExecutionException("HTML template file doesn't exist, plugin won't work properly.");
+		}
+		final Template template = velocityEngine.getTemplate(templatePath, "UTF-8");
+
+		// load buffered writer to output the file
+		try(BufferedWriter writer = Files.newBufferedWriter(ascentJsr303KeyGenOutputFile.toPath())) {
+			// generate the file
+			template.merge(context, writer);
+		} catch (final IOException ioe) {
+			throw new MojoExecutionException("Failed to open writer for output file.", ioe);
+		}
+//
+//
+//
+//		// flush and close the file
+//		try {
+//			writer.flush();
+//		} catch (final IOException ioe) {
+//			LOGGER.warn("Failed to flush the output file, exception caught but writer may not have closed properly.", ioe);
+//		} finally {
+//			try {
+//				writer.close();
+//			} catch (final IOException ioe) {
+//				LOGGER.warn("Failed to close the output file, exception caught but writer may not have closed properly.", ioe);
+//			}
+//		}
+	}
+
 }

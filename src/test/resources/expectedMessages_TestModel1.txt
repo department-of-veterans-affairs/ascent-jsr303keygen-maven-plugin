@@ -1,0 +1,43 @@
+CustomClassValidator1::
+Value cannot be empty.::
+Value cannot be null.::
+stringValue2.NotEmpty::may not be empty
+stringValue2.NotNull::This field may not be null, please fix this and try again!
+stringValue3.CustomRandomField1Validator::
+stringValue3.NotEmpty::may not be empty
+stringValue3.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.CustomClassValidator1::
+testModel2_notNullable.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.stringValue2.NotEmpty::may not be empty
+testModel2_notNullable.stringValue2.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.stringValue3.CustomRandomField1Validator::
+testModel2_notNullable.stringValue3.NotEmpty::may not be empty
+testModel2_notNullable.stringValue3.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.testModel3_notNullable.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.testModel3_notNullable.stringValue2.NotEmpty::may not be empty
+testModel2_notNullable.testModel3_notNullable.stringValue2.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.testModel3_notNullable.stringValue3.CustomRandomField1Validator::
+testModel2_notNullable.testModel3_notNullable.stringValue3.NotEmpty::may not be empty
+testModel2_notNullable.testModel3_notNullable.stringValue3.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.testModel3_nullable.stringValue2.NotEmpty::may not be empty
+testModel2_notNullable.testModel3_nullable.stringValue2.NotNull::This field may not be null, please fix this and try again!
+testModel2_notNullable.testModel3_nullable.stringValue3.CustomRandomField1Validator::
+testModel2_notNullable.testModel3_nullable.stringValue3.NotEmpty::may not be empty
+testModel2_notNullable.testModel3_nullable.stringValue3.NotNull::This field may not be null, please fix this and try again!
+testModel2_nullable.CustomClassValidator1::
+testModel2_nullable.stringValue2.NotEmpty::may not be empty
+testModel2_nullable.stringValue2.NotNull::This field may not be null, please fix this and try again!
+testModel2_nullable.stringValue3.CustomRandomField1Validator::
+testModel2_nullable.stringValue3.NotEmpty::may not be empty
+testModel2_nullable.stringValue3.NotNull::This field may not be null, please fix this and try again!
+testModel2_nullable.testModel3_notNullable.NotNull::This field may not be null, please fix this and try again!
+testModel2_nullable.testModel3_notNullable.stringValue2.NotEmpty::may not be empty
+testModel2_nullable.testModel3_notNullable.stringValue2.NotNull::This field may not be null, please fix this and try again!
+testModel2_nullable.testModel3_notNullable.stringValue3.CustomRandomField1Validator::
+testModel2_nullable.testModel3_notNullable.stringValue3.NotEmpty::may not be empty
+testModel2_nullable.testModel3_notNullable.stringValue3.NotNull::This field may not be null, please fix this and try again!
+testModel2_nullable.testModel3_nullable.stringValue2.NotEmpty::may not be empty
+testModel2_nullable.testModel3_nullable.stringValue2.NotNull::This field may not be null, please fix this and try again!
+testModel2_nullable.testModel3_nullable.stringValue3.CustomRandomField1Validator::
+testModel2_nullable.testModel3_nullable.stringValue3.NotEmpty::may not be empty
+testModel2_nullable.testModel3_nullable.stringValue3.NotNull::This field may not be null, please fix this and try again!

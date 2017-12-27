@@ -1,0 +1,2 @@
+INTERFACE_ERROR_KEY_1_VALUE::Hello, my good sir madam, this is the message for interface based error 1.
+INTERFACE_ERROR_KEY_2_VALUE::

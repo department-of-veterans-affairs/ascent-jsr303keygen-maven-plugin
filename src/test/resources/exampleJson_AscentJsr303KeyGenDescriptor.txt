@@ -1,0 +1,15 @@
+{
+  "AscentJsr303KeyGenDescriptor" : {
+    "operationDescriptors" : [ {
+      "name" : "/sample/operation/name1",
+      "description" : "description",
+      "errorKeys" : {
+        "key1" : "key1 description",
+        "key2" : "key2 description"
+      },
+      "genJsr303KeysFromClasses" : [ "TestModel4", "TestModel1" ],
+      "genKeysFromInterfaces" : [ "InterfaceBasedErrorKeys" ]
+    } 
+    ]
+  }
+}

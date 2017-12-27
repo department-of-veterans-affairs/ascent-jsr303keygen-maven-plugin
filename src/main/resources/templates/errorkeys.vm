@@ -1,0 +1,67 @@
+<html>
+<head>
+<style>
+		.contentContainer {margin: auto; width:80%; }
+		.operationContainer {
+		    background: #ADADAD;
+		    border-radius: 10px;
+		    border: 2px solid #964B4B;
+		    padding: 10px; 
+		    margin-top:10px;
+		}
+		.detailsContainer { border: 1px solid #964B4B; margin-top:15px; background: #DCDCDC }
+		.detailsContainerInner {margin:15px 0 15px 5px;}
+		table {border-collapse: collapse;}
+		table, th, td { border: 1px solid black;}
+		th{font-weight: bold; text-align: left;}
+		th, td {padding: 3px;}
+		.name { font-size:200%; }
+		.description { font-size:125%; font-style: italic; padding-left:15px;}
+		.collapse { font-weight: bold; display: block; }
+		.collapse + input:after { content: " show error keys \25b6"; display: block;  }
+		.collapse + input:checked:after { content: " hide error keys \25bc"; display: block; }
+		.collapse + input { display: block; -webkit-appearance: none; -o-appearance:none; -moz-appearance:none;   }
+		.collapse + input + * { display: none; }
+		.collapse + input:checked + * { display: block; } 
+</style>
+</head>
+<body>
+	<div class="contentContainer">
+		#if( $ascentJsr303KeyGenDescriptor && $ascentJsr303KeyGenDescriptor.operationDescriptors )
+			#foreach( $operationDescriptor in $ascentJsr303KeyGenDescriptor.operationDescriptors )
+				<div class="operationContainer">
+					<label class="collapse" for="_$foreach.count">
+						<span class="name">$operationDescriptor.name</span>
+						#if( $operationDescriptor.description )
+							<span class="description">$operationDescriptor.description</span>
+						#end
+					</label>
+					<input id="_$foreach.count" type="checkbox">
+					<div class="detailsContainer">
+						<div class="detailsContainerInner">
+							The following are keys and a brief description of each the $operationDescriptor.errorKeys.size()
+							errors that can be returned for this operation.  For more information refer to the complete swagger documentation.
+						</div>
+						<div class="detailsContainerInner">
+							<table>
+								<tr>
+									<th>Error Key</th>
+									<th>Description/More Info</th>
+								</tr>
+								#foreach ($errorKeyEntry in $operationDescriptor.errorKeys.entrySet())
+									<tr>
+										<td>$errorKeyEntry.key</td>
+										<td>$errorKeyEntry.value</td>
+									</td>
+								#end
+							</table>
+						</div>
+					</div>
+				</div>
+			#end
+		#end
+	</div>
+</body>
+</html>
+
+

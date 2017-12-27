@@ -1,0 +1,22 @@
+stringValue1.NotEmpty::may not be empty
+stringValue1.NotNull::This field may not be null, please fix this and try again!
+testModel5.stringValue1.NotEmpty::may not be empty
+testModel5.stringValue1.NotNull::This field may not be null, please fix this and try again!
+testModel5.stringValue1.Pattern::must match "^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\-' ]+$"
+testModel5.stringValue1.Size::size must be between 0 and 35
+testModel5.testModel6Collection.Size::size must be between 0 and 100
+testModel5.testModel6Collection[#].stringValue1.NotEmpty::may not be empty
+testModel5.testModel6Collection[#].stringValue1.NotNull::This field may not be null, please fix this and try again!
+testModel5.testModel6Collection[#].stringValue1.Size::size must be between 0 and 35
+testModel5.testModel6Collection_ValidOnGetter.Size::size must be between 0 and 100
+testModel5.testModel6Collection_ValidOnGetter[#].stringValue1.NotEmpty::may not be empty
+testModel5.testModel6Collection_ValidOnGetter[#].stringValue1.NotNull::This field may not be null, please fix this and try again!
+testModel5.testModel6Collection_ValidOnGetter[#].stringValue1.Size::size must be between 0 and 35
+testModel5.testModel7Array.Size::size must be between 0 and 100
+testModel5.testModel7Array[#].stringValue1.NotEmpty::may not be empty
+testModel5.testModel7Array[#].stringValue1.NotNull::This field may not be null, please fix this and try again!
+testModel5.testModel7Array[#].stringValue1.Size::size must be between 0 and 35
+testModel5.testModel7Array_ValidOnGetter.Size::size must be between 0 and 100
+testModel5.testModel7Array_ValidOnGetter[#].stringValue1.NotEmpty::may not be empty
+testModel5.testModel7Array_ValidOnGetter[#].stringValue1.NotNull::This field may not be null, please fix this and try again!
+testModel5.testModel7Array_ValidOnGetter[#].stringValue1.Size::size must be between 0 and 35
