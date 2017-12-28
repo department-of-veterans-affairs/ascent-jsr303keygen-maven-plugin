@@ -23,7 +23,7 @@
 				<version>${project.version}</version>
 				<configuration>
 					<!-- use Maven properties in real implementation, don't hardcode -->
-					<asecentJsr303KeyGenDescriptorFile>src/test/resources/exampleJson_AscentJsr303KeyGenDescriptor_customMessageBundles.txt</asecentJsr303KeyGenDescriptorFile>
+					<ascentJsr303KeyGenDescriptorFile>src/test/resources/exampleJson_AscentJsr303KeyGenDescriptor_customMessageBundles.txt</ascentJsr303KeyGenDescriptorFile>
 					<ascentJsr303KeyGenOutputFile>target/ext-docs/errorkeys.html</ascentJsr303KeyGenOutputFile>
 				</configuration>
 				<executions>

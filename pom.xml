@@ -35,6 +35,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+
 		<!-- maven "the product itself" dependencies -->
 		<dependency>
 	        <groupId>org.apache.maven</groupId>
@@ -65,7 +70,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	    <dependency>
 	        <groupId>org.apache.maven.plugin-testing</groupId>
 	        <artifactId>maven-plugin-testing-harness</artifactId>
-	        <version>2.1</version>
+	        <version>3.3.0</version>
 	        <scope>test</scope>
 	    </dependency>
 

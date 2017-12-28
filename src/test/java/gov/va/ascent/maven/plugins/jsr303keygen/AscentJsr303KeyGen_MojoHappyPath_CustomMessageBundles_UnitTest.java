@@ -4,8 +4,8 @@ import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.junit.Assert;
 
-import junit.framework.Assert;
 
 public class AscentJsr303KeyGen_MojoHappyPath_CustomMessageBundles_UnitTest extends AbstractMojoTestCase {
 

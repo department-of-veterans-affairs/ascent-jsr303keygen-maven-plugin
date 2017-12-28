@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -37,21 +38,36 @@ public class JsonModelMapper_UnitTest {
 		AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptor = getSampleAscentJsr303KeyGenDescriptor();
 		
 		//to JSON conversion
-		String wssJsr303KeyGenDescriptorJson = JsonModelMapper.descriptorToJson(ascentJsr303KeyGenDescriptor);
-		Assert.assertNotNull(wssJsr303KeyGenDescriptorJson);
-		System.out.println(wssJsr303KeyGenDescriptorJson);
+		String ascentJsr303KeyGenDescriptorJson = JsonModelMapper.descriptorToJson(ascentJsr303KeyGenDescriptor);
+		Assert.assertNotNull(ascentJsr303KeyGenDescriptorJson);
+		System.out.println(ascentJsr303KeyGenDescriptorJson);
 		
 		//from JSON conversion using JSON we just created
-		AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptorFromJson = JsonModelMapper.descriptorFromJson(wssJsr303KeyGenDescriptorJson);
+		AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptorFromJson = JsonModelMapper.descriptorFromJson(ascentJsr303KeyGenDescriptorJson);
 		Assert.assertNotNull(ascentJsr303KeyGenDescriptorFromJson);
 		Assert.assertEquals(ascentJsr303KeyGenDescriptor, ascentJsr303KeyGenDescriptorFromJson);
 		
 		//from JSON conversion using file
 		URL sampleJsonFileURL = this.getClass().getResource("/exampleJson_AscentJsr303KeyGenDescriptor.txt");
-		File sampleJsonFile = new File(sampleJsonFileURL.toURI());	
-		ascentJsr303KeyGenDescriptorFromJson = JsonModelMapper.descriptorFromJson(FileUtils.readFileToString(sampleJsonFile));
+		File sampleJsonFile = new File(sampleJsonFileURL.toURI());
+		ascentJsr303KeyGenDescriptorFromJson = JsonModelMapper.descriptorFromJson(new String(Files.readAllBytes(sampleJsonFile.toPath())));
 		Assert.assertNotNull(ascentJsr303KeyGenDescriptorFromJson);
-		Assert.assertEquals(ascentJsr303KeyGenDescriptor, ascentJsr303KeyGenDescriptorFromJson);
+		String compareresult = ascentJsr303KeyGenDescriptor.toString();
+ 		System.out.println(compareresult);
+		String compareresult2 = ascentJsr303KeyGenDescriptorFromJson.toString();
+		System.out.println(compareresult2);
+		Assert.assertEquals(ascentJsr303KeyGenDescriptorFromJson, ascentJsr303KeyGenDescriptor);
+	}
+
+	@Test
+	public void testEquals() throws Exception {
+		AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptor = getSampleAscentJsr303KeyGenDescriptor();
+		//from JSON conversion using file
+		URL sampleJsonFileURL = this.getClass().getResource("/exampleJson_AscentJsr303KeyGenDescriptor.txt");
+		File sampleJsonFile = new File(sampleJsonFileURL.toURI());
+		AscentJsr303KeyGenDescriptor ascentJsr303KeyGenDescriptorFromJson = JsonModelMapper.descriptorFromJson(new String(Files.readAllBytes(sampleJsonFile.toPath())));
+		Assert.assertNotNull(ascentJsr303KeyGenDescriptorFromJson);
+		Assert.assertEquals(ascentJsr303KeyGenDescriptorFromJson, ascentJsr303KeyGenDescriptor);
 	}
 	
 	@Test

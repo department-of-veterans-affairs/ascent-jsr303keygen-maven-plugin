@@ -41,10 +41,10 @@ public final class MessageInterpolator_UnitTest {
 		Assert.assertEquals("Zis field mai not bé null, pleasé fix zis ét try again!",
 				messageInterpolator.interpolate(notNullAnnotation, Locale.FRENCH));
 		Assert.assertEquals("must match \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"", messageInterpolator.interpolate(patternAnnotation));
-		Assert.assertEquals("doit suivre \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
+		Assert.assertEquals("doit respecter \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
 				messageInterpolator.interpolate(patternAnnotation, Locale.FRENCH));
 		Assert.assertEquals("size must be between 0 and 35", messageInterpolator.interpolate(sizeAnnotation));
-		Assert.assertEquals("la taille doit être entre 0 et 35", messageInterpolator.interpolate(sizeAnnotation, Locale.FRENCH));
+		Assert.assertEquals("la taille doit être comprise entre 0 et 35", messageInterpolator.interpolate(sizeAnnotation, Locale.FRENCH));
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public final class MessageInterpolator_UnitTest {
 		Assert.assertEquals("ne peut pas être nul", messageInterpolator.interpolate(notNullAnnotation, Locale.FRENCH));
 
 		Assert.assertEquals("must match \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"", messageInterpolator.interpolate(patternAnnotation));
-		Assert.assertEquals("doit suivre \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
+		Assert.assertEquals("doit respecter \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
 				messageInterpolator.interpolate(patternAnnotation, Locale.FRENCH));
 		Assert.assertEquals("The size of this field is bonkers, it's all out of whack.  The real size must be between 0 and 35",
 				messageInterpolator.interpolate(sizeAnnotation));
@@ -73,7 +73,7 @@ public final class MessageInterpolator_UnitTest {
 		Assert.assertEquals("may not be null", messageInterpolator.interpolate(notNullAnnotation));
 		Assert.assertEquals("ne peut pas être nul", messageInterpolator.interpolate(notNullAnnotation, Locale.FRENCH));
 		Assert.assertEquals("must match \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"", messageInterpolator.interpolate(patternAnnotation));
-		Assert.assertEquals("doit suivre \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
+		Assert.assertEquals("doit respecter \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
 				messageInterpolator.interpolate(patternAnnotation, Locale.FRENCH));
 		Assert.assertEquals("The size of this field is bonkers, it's all out of whack.  The real size must be between 0 and 35",
 				messageInterpolator.interpolate(sizeAnnotation));
@@ -93,7 +93,7 @@ public final class MessageInterpolator_UnitTest {
 		
 		//comes from default 
 		Assert.assertEquals("must match \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"", messageInterpolator.interpolate(patternAnnotation));
-		Assert.assertEquals("doit suivre \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
+		Assert.assertEquals("doit respecter \"^(?!.*[ ]{2}|[ ])[a-zA-Z0-9\\-' ]+$\"",
 				messageInterpolator.interpolate(patternAnnotation, Locale.FRENCH));
 		
 		//comes from bundle 1

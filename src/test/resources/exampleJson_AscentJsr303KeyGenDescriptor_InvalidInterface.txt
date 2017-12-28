@@ -7,7 +7,7 @@
         "key1" : "key1 description",
         "key2" : "key2 description"
       },
-      "genJsr303KeysFromClasses" : [ "TestModel4", "TestModel1" ],
+      "genJsr303KeysFromClasses" : [ "gov.va.ascent.maven.plugins.jsr303keygen.testmodel.TestModel4", "gov.va.ascent.maven.plugins.jsr303keygen.testmodel.TestModel1" ],
       "genKeysFromInterfaces" : [ "gov.va.ascent.maven.plugins.jsr303keygen.testmodel.InvalidInterface" ]
     } 
     ]

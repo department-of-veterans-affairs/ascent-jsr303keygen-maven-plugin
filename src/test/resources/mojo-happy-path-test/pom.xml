@@ -24,7 +24,7 @@
 				<configuration>
 					<!-- use Maven properties in real implementation, don't hardcode -->
 					<ascentJsr303KeyGenDescriptorFile>src/test/resources/exampleJson_AscentJsr303KeyGenDescriptor.txt</ascentJsr303KeyGenDescriptorFile>
-					<ascentsr303KeyGenOutputFile>target/ext-docs/errorkeys.html</ascentsr303KeyGenOutputFile>
+					<ascentJsr303KeyGenOutputFile>target/ext-docs/errorkeys.html</ascentJsr303KeyGenOutputFile>
 				</configuration>
 				<executions>
 					<execution>

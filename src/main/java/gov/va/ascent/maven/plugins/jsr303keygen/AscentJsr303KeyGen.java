@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -69,8 +71,13 @@ public class AscentJsr303KeyGen extends AbstractMojo {
 		} else {
 			LOGGER.info("Attempting to use ascentJsr303KeyGenOutputFile at: " + ascentJsr303KeyGenOutputFile.getAbsolutePath());
 			// ensure file is writeable (side effect is empty it out and recreate)
-			try(BufferedWriter writer = Files.newBufferedWriter(ascentJsr303KeyGenOutputFile.toPath())) {
+			try {
+				if(!Files.exists(Paths.get(ascentJsr303KeyGenOutputFile.getParent()))){
+					Files.createDirectories(Paths.get(ascentJsr303KeyGenOutputFile.getParent()));
+				}
+				BufferedWriter writer = Files.newBufferedWriter(Paths.get(ascentJsr303KeyGenOutputFile.getAbsolutePath()));
 				writer.write("");
+				writer.close();
 			} catch (final IOException ioe) {
 				String message = "IOException writing the ascentJsr303KeyGenOutputFile!";
 				final MojoExecutionException mojoExecutionException = new MojoExecutionException(message, ioe);

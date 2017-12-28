@@ -1,5 +1,5 @@
 {
-  "AscentsJsr303KeyGenDescriptor" : {
+  "AscentJsr303KeyGenDescriptor" : {
     "operationDescriptors" : [ {
       "name" : "/sample/operation/name1",
       "description" : "description",
@@ -8,7 +8,7 @@
         "key2" : "key2 description"
       },
       "genJsr303KeysFromClasses" : [ "gov.va.ascent.maven.plugins.jsr303keygen.testmodel.InvalidClass",
-      	"TestModel4", "TestModel1" ]
+      	"gov.va.ascent.maven.plugins.jsr303keygen.testmodel.TestModel4", "gov.va.ascent.maven.plugins.jsr303keygen.testmodel.TestModel1" ]
     } 
     ]
   }

@@ -4,10 +4,10 @@ import java.io.File;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.Assert;
 
 public class AscentJsr303KeyGen_NonMojo_UnitTest {
 
