@@ -101,4 +101,22 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		</dependency>
 		
 	</dependencies>
+	
+	<build>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-plugin-plugin</artifactId>
+	            <version>3.5</version>
+	        </plugin>
+	        <!-- The skip property allows to skip the execution of the Spring Boot maven plugin altogether -->
+	        <plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	            <configuration>
+	                <skip>true</skip>
+	            </configuration>
+	        </plugin>
+	    </plugins>
+	</build>
 </project>
