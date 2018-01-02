@@ -18,7 +18,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ascent.version>0.0.1</ascent.version> <!-- should match parent pom version above -->
-		<maven.plugin.version>3.2.5</maven.plugin.version>
+		<maven.plugin.version>3.5.2</maven.plugin.version>
 	    <maven.compiler.source>1.8</maven.compiler.source>
 	    <maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
