@@ -12,7 +12,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
 	<groupId>gov.va.ascent.maven.plugins</groupId>
 	<artifactId>ascent-jsr303keygen-maven-plugin</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<properties>
