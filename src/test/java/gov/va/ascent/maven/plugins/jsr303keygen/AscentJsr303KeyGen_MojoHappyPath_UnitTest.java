@@ -5,7 +5,7 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public class AscentJsr303KeyGen_MojoHappyPath_UnitTest extends AbstractMojoTestCase {
 

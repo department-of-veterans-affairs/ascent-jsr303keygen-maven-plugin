@@ -37,7 +37,7 @@ public final class ErrorIntrospector {
 	protected ErrorIntrospector() {
 	}
 
-	protected static void introspectInterfaceForKeys(final MessageInterpolator messageInterpolator, final Class clazz,
+	protected static void introspectInterfaceForKeys(final MessageInterpolator messageInterpolator, final Class<?> clazz,
 			final Map<String, String> jsr303Errors) throws MojoExecutionException{
 		Assert.notNull(clazz, "clazz to introspect for interface keys cannot be null!");
 		for (final Field field : FieldUtils.getAllFields(clazz)) {
@@ -75,7 +75,7 @@ public final class ErrorIntrospector {
 	 * @param nodepath the nodepath
 	 * @param jsr303Errors the jsr303Errors
 	 */
-	protected static void instrospectClassForJSR303s(final MessageInterpolator messageInterpolator, final Class clazz,
+	protected static void instrospectClassForJSR303s(final MessageInterpolator messageInterpolator, final Class<?> clazz,
 			final String nodepath, final Map<String, String> jsr303Errors) {
 		Assert.notNull(clazz, "clazz to introspect for JSR303s cannot be null!");
 		Assert.notNull(nodepath, "nodepath to introspect for JSR303s cannot be null!");
@@ -96,7 +96,7 @@ public final class ErrorIntrospector {
 	 * @param nodepath the nodepath
 	 * @param jsr303Errors the jsr303Errors
 	 */
-	private static void instrospectClassFieldsForJSR303s(final MessageInterpolator messageInterpolator, final Class clazz,
+	private static void instrospectClassFieldsForJSR303s(final MessageInterpolator messageInterpolator, final Class<?> clazz,
 			final String nodepath, final Map<String, String> jsr303Errors) {
 		for (final Field field : FieldUtils.getAllFields(clazz)) {
 			for (final Annotation fldAnnotation : field.getDeclaredAnnotations()) {
@@ -114,7 +114,7 @@ public final class ErrorIntrospector {
 	 * @param nodepath the nodepath
 	 * @param jsr303Errors the jsr303Errors
 	 */
-	private static void instrospectClassPropertiesForJSR303s(final MessageInterpolator messageInterpolator, final Class clazz,
+	private static void instrospectClassPropertiesForJSR303s(final MessageInterpolator messageInterpolator, final Class<?> clazz,
 			final String nodepath, final Map<String, String> jsr303Errors) {
 		for (final PropertyDescriptor propertyDescriptor : PropertyUtils.getPropertyDescriptors(clazz)) {
 			if (propertyDescriptor != null && propertyDescriptor.getReadMethod() != null

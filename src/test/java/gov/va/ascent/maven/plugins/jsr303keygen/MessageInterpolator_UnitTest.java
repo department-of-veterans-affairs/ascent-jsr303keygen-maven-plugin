@@ -172,7 +172,7 @@ public final class MessageInterpolator_UnitTest {
 		Assert.assertFalse(localisedMessageFr1.equals(localisedMessageUs1));
 	}
 
-	private Annotation getAnnotation(final Class clazz, final String fieldName, final Class annotation) {
+	private Annotation getAnnotation(final Class<TestModel5> clazz, final String fieldName, final Class<?> annotation) {
 		for (final Field field : FieldUtils.getAllFields(clazz)) {
 			if (field.getName().equals(fieldName)) {
 				for (final Annotation fldAnnotation : field.getDeclaredAnnotations()) {

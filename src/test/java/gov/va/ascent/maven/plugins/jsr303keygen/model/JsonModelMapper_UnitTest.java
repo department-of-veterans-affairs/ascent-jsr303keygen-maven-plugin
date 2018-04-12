@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import gov.va.ascent.maven.plugins.jsr303keygen.testmodel.InterfaceBasedErrorKeys;
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

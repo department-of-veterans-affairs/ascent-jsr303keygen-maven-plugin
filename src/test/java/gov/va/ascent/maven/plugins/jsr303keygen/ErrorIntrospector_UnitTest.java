@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -16,7 +17,7 @@ import org.junit.Test;
 import gov.va.ascent.maven.plugins.jsr303keygen.testmodel.InterfaceBasedErrorKeys;
 import gov.va.ascent.maven.plugins.jsr303keygen.testmodel.TestModel1;
 import gov.va.ascent.maven.plugins.jsr303keygen.testmodel.TestModel4;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public class ErrorIntrospector_UnitTest {
 
@@ -31,7 +32,7 @@ public class ErrorIntrospector_UnitTest {
 
 		final URL urlToExpectedMessageFile = this.getClass().getResource("/expectedMessages_InterfaceBasedErrorKeys.txt");
 		final File expectedMessagesFile = new File(urlToExpectedMessageFile.toURI());
-		final List<String> expextedMessages = FileUtils.readLines(expectedMessagesFile);
+		final List<String> expextedMessages = FileUtils.readLines(expectedMessagesFile, Charset.defaultCharset());
 		Assert.assertEquals(2, expextedMessages.size());
 		for (final String expectedMessage : expextedMessages) {
 			Assert.assertTrue(errors.containsKey(expectedMessage.split("::")[0]));
@@ -62,7 +63,7 @@ public class ErrorIntrospector_UnitTest {
 
 		final URL urlToExpectedMessageFile = this.getClass().getResource("/expectedMessages_TestModel1.txt");
 		final File expectedMessagesFile = new File(urlToExpectedMessageFile.toURI());
-		final List<String> expextedMessages = FileUtils.readLines(expectedMessagesFile);
+		final List<String> expextedMessages = FileUtils.readLines(expectedMessagesFile, Charset.defaultCharset());
 		Assert.assertEquals(43, expextedMessages.size());
 		for (final String expectedMessage : expextedMessages) {
 			Assert.assertTrue(jsr303Errors.containsKey(expectedMessage.split("::")[0]));
@@ -92,7 +93,7 @@ public class ErrorIntrospector_UnitTest {
 
 		final URL urlToExpectedMessageFile = this.getClass().getResource("/expectedMessages_TestModel4.txt");
 		final File expectedMessagesFile = new File(urlToExpectedMessageFile.toURI());
-		final List<String> expextedMessages = FileUtils.readLines(expectedMessagesFile);
+		final List<String> expextedMessages = FileUtils.readLines(expectedMessagesFile, Charset.defaultCharset());
 		Assert.assertEquals(22, expextedMessages.size());
 		for (final String expectedMessage : expextedMessages) {
 			Assert.assertTrue(jsr303Errors.containsKey(expectedMessage.split("::")[0]));
