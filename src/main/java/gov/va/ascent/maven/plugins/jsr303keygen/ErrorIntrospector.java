@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import gov.va.ascent.framework.validation.ModelValidator;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -19,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 
+import gov.va.ascent.framework.validation.ModelValidator;
 
 /**
  * The Class ErrorIntrospector contains the methods for introspecting classes for errors. This includes introspecting a graph for JSR
@@ -38,7 +38,7 @@ public final class ErrorIntrospector {
 	}
 
 	protected static void introspectInterfaceForKeys(final MessageInterpolator messageInterpolator, final Class<?> clazz,
-			final Map<String, String> jsr303Errors) throws MojoExecutionException{
+			final Map<String, String> jsr303Errors) throws MojoExecutionException {
 		Assert.notNull(clazz, "clazz to introspect for interface keys cannot be null!");
 		for (final Field field : FieldUtils.getAllFields(clazz)) {
 			String messageKey = null;
@@ -50,7 +50,7 @@ public final class ErrorIntrospector {
 				invalidFieldValue(illegalAccess);
 			}
 			String message = messageInterpolator.noInterpolate(messageKey);
-			if (messageKey.equals(message)) {
+			if (messageKey == null || messageKey.equals(message)) {
 				message = "";
 			}
 			jsr303Errors.put(messageKey, message);
@@ -63,7 +63,8 @@ public final class ErrorIntrospector {
 	 * @param exception exception
 	 */
 	private static void invalidFieldValue(final Exception exception) throws MojoExecutionException {
-		final MojoExecutionException mojoExecutionException = new MojoExecutionException("Verify your messages in the Interface.", exception);
+		final MojoExecutionException mojoExecutionException =
+				new MojoExecutionException("Verify your messages in the Interface.", exception);
 		LOGGER.error(mojoExecutionException.getMessage(), mojoExecutionException);
 		throw mojoExecutionException;
 	}
@@ -194,7 +195,7 @@ public final class ErrorIntrospector {
 	 */
 	private static String growNodepath(final String nodepath, final String newNodeName, final boolean isCollectionIndicator) {
 		Assert.notNull(nodepath, "nodepath to grow cannot be null!");
-		Assert.notNull(newNodeName,"newNodeName grow cannot be null!");
+		Assert.notNull(newNodeName, "newNodeName grow cannot be null!");
 
 		String returnIt;
 
@@ -225,6 +226,5 @@ public final class ErrorIntrospector {
 		return attributes != null && attributes.containsKey("message") && attributes.containsKey("groups")
 				&& attributes.containsKey("payload");
 	}
-
 
 }

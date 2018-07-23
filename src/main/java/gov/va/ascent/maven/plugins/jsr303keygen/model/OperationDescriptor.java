@@ -1,12 +1,11 @@
 package gov.va.ascent.maven.plugins.jsr303keygen.model;
 
-import gov.va.ascent.framework.transfer.AbstractTransferObject;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import gov.va.ascent.framework.transfer.AbstractTransferObject;
 
 /**
  * Used to describe a operation we want error keys generated for.
@@ -25,13 +24,13 @@ public final class OperationDescriptor extends AbstractTransferObject {
 	private String description;
 
 	/** The custom error keys. */
-	private Map<String, String> errorKeys = new HashMap<String, String>();
+	private Map<String, String> errorKeys = new HashMap<>();
 
 	/** The gen JSR 303 keys from classes. */
-	private Set<String> genJsr303KeysFromClasses = new HashSet<String>();
+	private Set<String> genJsr303KeysFromClasses = new HashSet<>();
 
 	/** The gen keys from interfaces. */
-	private Set<String> genKeysFromInterfaces = new HashSet<String>();
+	private Set<String> genKeysFromInterfaces = new HashSet<>();
 
 	/**
 	 * Gets the name.

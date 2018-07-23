@@ -2,14 +2,16 @@ package gov.va.ascent.maven.plugins.jsr303keygen.model;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import gov.va.ascent.framework.util.SanitizationUtil;
 
 /**
  * The Class JsonModelMapper contains utility operations to convert to/from JSON our custom model objects we use to describe the
@@ -68,13 +70,15 @@ public final class JsonModelMapper {
 	public static AscentJsr303KeyGenDescriptor descriptorFromJson(final String json) {
 		if (json != null) {
 			try {
-				return JsonModelMapper.MAPPER.readValue(json, AscentJsr303KeyGenDescriptor.class);
+				return JsonModelMapper.MAPPER.readValue(SanitizationUtil.stripXSS(json), AscentJsr303KeyGenDescriptor.class);
 			} catch (final JsonProcessingException jpe) {
-				LOGGER.error("descriptorFromJson resulted in JsonProcessingException, input JSON and exception : " + json
+				LOGGER.error("descriptorFromJson resulted in JsonProcessingException, input JSON and exception : "
+						+ SanitizationUtil.stripXSS(json)
 						+ EXCEPTION_LOG_SPACER + jpe);
 			} catch (final IOException ioe) {
 				LOGGER.error(
-						"descriptorFromJson resulted in IOException, input JSON and exception : " + json + EXCEPTION_LOG_SPACER + ioe);
+						"descriptorFromJson resulted in IOException, input JSON and exception : " + SanitizationUtil.stripXSS(json)
+								+ EXCEPTION_LOG_SPACER + ioe);
 			}
 		}
 		return null;

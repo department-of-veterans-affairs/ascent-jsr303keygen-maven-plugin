@@ -7,7 +7,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		<groupId>gov.va.ascent</groupId>
 		<artifactId>ascent-libraries-parent</artifactId>
 		<version>0.0.4-SNAPSHOT</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 
 	<groupId>gov.va.ascent.maven.plugins</groupId>
@@ -104,6 +104,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
 		
+		<!-- for test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>

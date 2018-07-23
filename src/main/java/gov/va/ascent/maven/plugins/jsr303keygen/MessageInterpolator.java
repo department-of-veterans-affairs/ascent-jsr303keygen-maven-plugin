@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
-
 /**
  * The Class MessageInterpolator is a customized version of
  * org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator that lets us grab messages out of the standard
@@ -30,7 +29,7 @@ public final class MessageInterpolator {
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageInterpolator.class);
-	
+
 	/**
 	 * The name of the default message bundle.
 	 */
@@ -54,7 +53,7 @@ public final class MessageInterpolator {
 	/**
 	 * Loads user-specified resource bundles.
 	 */
-	private final Set<ResourceBundleLocator> userResourceBundleLocators = new LinkedHashSet<ResourceBundleLocator>();
+	private final Set<ResourceBundleLocator> userResourceBundleLocators = new LinkedHashSet<>();
 
 	/**
 	 * Loads built-in resource bundles.
@@ -64,7 +63,7 @@ public final class MessageInterpolator {
 	/**
 	 * Step 1-3 of message interpolation can be cached. We do this in this map.
 	 */
-	private final ConcurrentMap<LocalisedMessage, String> resolvedMessages = new ConcurrentHashMap<LocalisedMessage, String>();
+	private final ConcurrentMap<LocalisedMessage, String> resolvedMessages = new ConcurrentHashMap<>();
 
 	/**
 	 * Flag indicating whether this interpolator should cache some of the interpolation steps.
@@ -187,7 +186,7 @@ public final class MessageInterpolator {
 				try {
 					resolvedMessage = userResourceBundle.getString(messageKey);
 				} catch (final MissingResourceException mre) {
-					LOGGER.debug("messageKey not found in bundle", mre);	
+					LOGGER.debug("messageKey not found in bundle", mre);
 				}
 				if (resolvedMessage != null) {
 					break;
@@ -198,9 +197,9 @@ public final class MessageInterpolator {
 				try {
 					final ResourceBundle defaultResourceBundle = defaultResourceBundleLocator.getResourceBundle(locale);
 					resolvedMessage = defaultResourceBundle.getString(messageKey);
-				} catch (final MissingResourceException e) {
-					// at this point all options exhausted, return messageKey itself
-					resolvedMessage = messageKey;
+				} catch (final MissingResourceException e) { // NOSONAR do not need to log or rethrow
+					// // NOSONAR do not need to log or rethrow - at this point all options exhausted, return messageKey itself
+					resolvedMessage = messageKey; // NOSONAR do not need to log or rethrow
 				}
 			}
 		}
@@ -235,33 +234,8 @@ public final class MessageInterpolator {
 			resolvedMessage = resolvedMessages.get(localisedMessage);
 		}
 
-		// if the message is not already in the cache we have to run step 1-3 of the message resolution
 		if (resolvedMessage == null) {
-			final ResourceBundle defaultResourceBundle = defaultResourceBundleLocator.getResourceBundle(locale);
-
-			String userBundleResolvedMessage = null;
-			resolvedMessage = message;
-			boolean evaluatedDefaultBundleOnce = false;
-			do {
-				// search the user bundle recursive (step1)
-				for (final ResourceBundleLocator userResourceBundleLocator : userResourceBundleLocators) {
-					final ResourceBundle userResourceBundle = userResourceBundleLocator.getResourceBundle(locale);
-					userBundleResolvedMessage = replaceVariables(resolvedMessage, userResourceBundle, locale, true);
-					if (userBundleResolvedMessage != null && !userBundleResolvedMessage.equals(message)) {
-						break;
-					}
-				}
-
-				// exit condition - we have at least tried to validate against the default bundle and there was no
-				// further replacements
-				if (evaluatedDefaultBundleOnce && !hasReplacementTakenPlace(userBundleResolvedMessage, resolvedMessage)) {
-					break;
-				}
-
-				// search the default bundle non recursive (step2)
-				resolvedMessage = replaceVariables(userBundleResolvedMessage, defaultResourceBundle, locale, false);
-				evaluatedDefaultBundleOnce = true;
-			} while (true);
+			resolvedMessage = searchUserBundle(message, locale);
 		}
 
 		// cache resolved message
@@ -279,6 +253,47 @@ public final class MessageInterpolator {
 		resolvedMessage = resolvedMessage.replace("\\{", "{");
 		resolvedMessage = resolvedMessage.replace("\\}", "}");
 		resolvedMessage = resolvedMessage.replace("\\\\", "\\");
+		return resolvedMessage;
+	}
+
+	/**
+	 * Searches the UserBundle for substitution values for the message.
+	 * Returns the message containing resolved substitutions from the user bundle..
+	 *
+	 * @param message the message requiring substitutions
+	 * @param locale the language locale
+	 * @return String the message with substitutions resolved
+	 */
+	private String searchUserBundle(final String message, final Locale locale) {
+		String resolvedMessage = message;
+
+		// if the message is not already in the cache we have to run step 1-3 of the message resolution
+		final ResourceBundle defaultResourceBundle = defaultResourceBundleLocator.getResourceBundle(locale);
+
+		String userBundleResolvedMessage = null;
+		boolean evaluatedDefaultBundleOnce = false;
+		do {
+			// search the user bundle (step1)
+			for (final ResourceBundleLocator userResourceBundleLocator : userResourceBundleLocators) {
+				final ResourceBundle userResourceBundle = userResourceBundleLocator.getResourceBundle(locale);
+				userBundleResolvedMessage = replaceVariables(resolvedMessage, userResourceBundle, locale, true);
+				if (userBundleResolvedMessage != null && !userBundleResolvedMessage.equals(message)) {
+					break;
+				}
+			}
+
+			// exit condition - we have at least tried to validate against the default bundle and there was no
+			// further replacements
+			if (evaluatedDefaultBundleOnce && userBundleResolvedMessage != null
+					&& !hasReplacementTakenPlace(userBundleResolvedMessage, resolvedMessage)) {
+				break;
+			}
+
+			// search the default bundle non recursive (step2)
+			resolvedMessage = replaceVariables(userBundleResolvedMessage, defaultResourceBundle, locale, false);
+			evaluatedDefaultBundleOnce = true;
+		} while (true);
+
 		return resolvedMessage;
 	}
 
@@ -363,9 +378,9 @@ public final class MessageInterpolator {
 			} else {
 				parameterValue = parameterName;
 			}
-		} catch (final MissingResourceException e) {
-			// return parameter itself
-			parameterValue = parameterName;
+		} catch (final MissingResourceException e) { // NOSONAR log or rethrow of exception not needed
+			// NOSONAR log or rethrow of exception not needed - return parameter itself
+			parameterValue = parameterName; // NOSONAR log or rethrow of exception not needed
 		}
 		return parameterValue;
 	}
@@ -416,25 +431,21 @@ public final class MessageInterpolator {
 			// jshrader this is code imported from hibernate, we aren't altering this aspect of this code
 			// furthermore, this is a perfect place where inline conditional is prefered as the code is actually
 			// more condensed and easier to read
-			// CHECKSTYLE:OFF
-			if (object == null || getClass() != object.getClass()) {
-				return false;
-			}
-			// CHECKSTYLE:ON
+			if (object == null || getClass() != object.getClass()) { // NOSONAR per comment above
+				return false; // NOSONAR per comment above
+			} // NOSONAR per comment above
 
 			final LocalisedMessage that = (LocalisedMessage) object;
 
 			// jshrader this is code imported from hibernate, we aren't altering this aspect of this code
 			// furthermore, this is a perfect place where inline conditional is prefered as the code is actually
 			// more condensed and easier to read
-			// CHECKSTYLE:OFF
-			if (locale != null ? !locale.equals(that.locale) : that.locale != null) {
-				return false;
-			}
-			if (message != null ? !message.equals(that.message) : that.message != null) {
-				return false;
-			}
-			// CHECKSTYLE:ON
+			if (locale != null ? !locale.equals(that.locale) : that.locale != null) { // NOSONAR per comment above
+				return false; // NOSONAR per comment above
+			} // NOSONAR per comment above
+			if (message != null ? !message.equals(that.message) : that.message != null) { // NOSONAR per comment above
+				return false; // NOSONAR per comment above
+			} // NOSONAR per comment above
 
 			return true;
 		}
