@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -87,13 +88,7 @@ public class AscentJsr303KeyGen extends AbstractMojo {
 				LOGGER.error(message, mojoExecutionException);
 				throw mojoExecutionException;
 			} finally {
-				if (writer != null) {
-					try {
-						writer.close();
-					} catch (final IOException e) { // NOSONAR irrelevant at this point but required by JVM
-						// NOSONAR irrelevant at this point but required by JVM
-					} // NOSONAR irrelevant at this point but required by JVM
-				}
+				IOUtils.closeQuietly(writer);
 			}
 		}
 
@@ -227,13 +222,7 @@ public class AscentJsr303KeyGen extends AbstractMojo {
 				throw new MojoExecutionException("HTML template file doesn't exist, plugin won't work properly.");
 			}
 		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (final IOException e) { // NOSONAR nothing to do here
-					// NOSONAR nothing to do here
-				} // NOSONAR nothing to do here
-			}
+			IOUtils.closeQuietly(input);
 		}
 		final Template template = velocityEngine.getTemplate(templatePath, "UTF-8");
 
