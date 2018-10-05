@@ -21,9 +21,9 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import gov.va.ascent.framework.log.AscentLogger;
+import gov.va.ascent.framework.log.AscentLoggerFactory;
 import gov.va.ascent.maven.plugins.jsr303keygen.model.AscentJsr303KeyGenDescriptor;
 import gov.va.ascent.maven.plugins.jsr303keygen.model.JsonModelMapper;
 import gov.va.ascent.maven.plugins.jsr303keygen.model.OperationDescriptor;
@@ -37,7 +37,7 @@ import gov.va.ascent.maven.plugins.jsr303keygen.model.OperationDescriptor;
 public class AscentJsr303KeyGen extends AbstractMojo {
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AscentJsr303KeyGen.class);
+	private static final AscentLogger LOGGER = AscentLoggerFactory.getLogger(AscentJsr303KeyGen.class);
 
 	@Parameter(property = "keygen.ascentJsr303KeyGenDescriptorFile")
 	private File ascentJsr303KeyGenDescriptorFile;
