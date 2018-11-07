@@ -1,5 +1,5 @@
 @Library('ascent') _
 
 mavenPipeline {
-    
+
 }
