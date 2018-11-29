@@ -13,11 +13,11 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 
-import gov.va.ascent.framework.log.AscentLogger;
-import gov.va.ascent.framework.log.AscentLoggerFactory;
 import gov.va.ascent.framework.validation.ModelValidator;
 
 /**
@@ -29,7 +29,7 @@ import gov.va.ascent.framework.validation.ModelValidator;
 public final class ErrorIntrospector {
 
 	/** The Constant LOGGER. */
-	private static final AscentLogger LOGGER = AscentLoggerFactory.getLogger(ErrorIntrospector.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorIntrospector.class);
 
 	/**
 	 * Utility class hidden constructor

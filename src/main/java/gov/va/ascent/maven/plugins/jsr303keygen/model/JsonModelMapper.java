@@ -2,14 +2,15 @@ package gov.va.ascent.maven.plugins.jsr303keygen.model;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import gov.va.ascent.framework.log.AscentLogger;
-import gov.va.ascent.framework.log.AscentLoggerFactory;
 import gov.va.ascent.framework.util.SanitizationUtil;
 
 /**
@@ -21,7 +22,7 @@ import gov.va.ascent.framework.util.SanitizationUtil;
 public final class JsonModelMapper {
 
 	/** The Constant LOGGER. */
-	private static final AscentLogger LOGGER = AscentLoggerFactory.getLogger(JsonModelMapper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JsonModelMapper.class);
 
 	/** The Constant EXCEPTION_LOG_SPACER. */
 	private static final String EXCEPTION_LOG_SPACER = " ";

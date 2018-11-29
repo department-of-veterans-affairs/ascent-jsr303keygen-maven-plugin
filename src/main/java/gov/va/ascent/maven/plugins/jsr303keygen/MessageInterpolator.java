@@ -14,10 +14,9 @@ import java.util.regex.Pattern;
 
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.hibernate.validator.spi.resourceloading.ResourceBundleLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
-
-import gov.va.ascent.framework.log.AscentLogger;
-import gov.va.ascent.framework.log.AscentLoggerFactory;
 
 /**
  * The Class MessageInterpolator is a customized version of
@@ -29,7 +28,7 @@ import gov.va.ascent.framework.log.AscentLoggerFactory;
 public final class MessageInterpolator {
 
 	/** The Constant LOGGER. */
-	private static final AscentLogger LOGGER = AscentLoggerFactory.getLogger(MessageInterpolator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageInterpolator.class);
 
 	/**
 	 * The name of the default message bundle.
