@@ -8,13 +8,13 @@
 	<parent>
 		<groupId>gov.va.ascent</groupId>
 		<artifactId>ascent-libraries-parent</artifactId>
-		<version>0.0.9-SNAPSHOT</version>
+		<version>0.0.9</version>
 		<relativePath />
 	</parent>
 
 	<groupId>gov.va.ascent.maven.plugins</groupId>
 	<artifactId>ascent-jsr303keygen-maven-plugin</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.5</version>
 	<packaging>maven-plugin</packaging>
 
 	<properties>
@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>gov.va.ascent</groupId>
 			<artifactId>ascent-framework</artifactId>
-			<version>0.0.12-SNAPSHOT</version>
+			<version>0.0.12</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.aspectj</groupId>
